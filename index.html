@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My Location</title>
+  </head>
+  <body>
+    <!-- Include the location.js library -->
+    <script src="https://unpkg.com/location.js/dist/location.min.js"></script>
+
+    <!-- Add a div element to hold the latitude and longitude -->
+    <div id="location"></div>
+
+    <script>
+      // Get the user's current location
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          // Get the latitude and longitude values from the position object
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+
+          // Display the latitude and longitude on the page
+          document.getElementById("location").innerHTML =
+            "Latitude: " + latitude + ", Longitude: " + longitude;
+        },
+        function(error) {
+          console.error(error);
+        }
+      );
+
+      // Set up the location watcher
+      var watcher = location.watchPosition(
+        function(position) {
+          // This function will be called with the user's current location every time it changes
+
+          // Send the location to the server using an AJAX request
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/update-location");
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.send(
+            JSON.stringify({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            })
+          );
+        },
+        function(error) {
+          console.error(error);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: Infinity
+        }
+      );
+    </script>
+  </body>
+</html>
