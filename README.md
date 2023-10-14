@@ -6,7 +6,7 @@ first install ngrok
 then run 
 python -m http.server 80 
 on the GeoSleuth directory it will make the directory of that folder a simple server 
-# open another terminal and then run 
+open another terminal and then run 
 ngrok http 80 
 edit the html file as you want to make your pages work 
 
